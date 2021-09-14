@@ -24,7 +24,7 @@ pipeline
     	{
     		steps
     		{
-				sh("docker build -t ${DOCKER_BUILD_NAME}")
+				sh("docker build -t ${DOCKER_BUILD_NAME} ." )
 			}
 		}
 
