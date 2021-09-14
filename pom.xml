@@ -1,0 +1,181 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<project xmlns="http://maven.apache.org/POM/4.0.0"
+	xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+	xsi:schemaLocation="http://maven.apache.org/POM/4.0.0 https://maven.apache.org/xsd/maven-4.0.0.xsd">
+	<modelVersion>4.0.0</modelVersion>
+	<parent>
+		<groupId>org.springframework.boot</groupId>
+		<artifactId>spring-boot-starter-parent</artifactId>
+		<version>2.5.2</version>
+		<relativePath /> <!-- lookup parent from repository -->
+	</parent>
+	<groupId>com.reply</groupId>
+	<artifactId>SampleMockMdw</artifactId>
+	<version>0.0.1-SNAPSHOT</version>
+	<packaging>jar</packaging>
+	<name>SampleMockMdw</name>
+	<description>SpringbootCodeGen</description>
+	<properties>
+		<java.version>1.8</java.version>
+		<jdkVersion>adoptopenjdk:latest</jdkVersion>
+	</properties>
+	<dependencies>
+		<dependency>
+			<groupId>org.springdoc</groupId>
+			<artifactId>springdoc-openapi-ui</artifactId>
+			<version>1.5.2</version>
+		</dependency>
+		<dependency>
+			<groupId>org.springframework.boot</groupId>
+			<artifactId>spring-boot-starter-web</artifactId>
+		</dependency>
+		<dependency>
+			<groupId>org.springframework.boot</groupId>
+			<artifactId>spring-boot-devtools</artifactId>
+			<scope>runtime</scope>
+			<optional>true</optional>
+		</dependency>
+		<dependency>
+			<groupId>org.projectlombok</groupId>
+			<artifactId>lombok</artifactId>
+			<optional>true</optional>
+		</dependency>
+		<dependency>
+			<groupId>org.springframework.boot</groupId>
+			<artifactId>spring-boot-starter-tomcat</artifactId>
+			<scope>provided</scope>
+		</dependency>
+		<dependency>
+			<groupId>org.springframework.boot</groupId>
+			<artifactId>spring-boot-starter-test</artifactId>
+			<scope>test</scope>
+		</dependency>
+	</dependencies>
+
+	<build>
+		<plugins>
+			<plugin>
+				<groupId>org.springframework.boot</groupId>
+				<artifactId>spring-boot-maven-plugin</artifactId>
+				<configuration>
+					<excludes>
+						<exclude>
+							<groupId>org.projectlombok</groupId>
+							<artifactId>lombok</artifactId>
+						</exclude>
+					</excludes>
+				</configuration>
+			</plugin>
+
+			<plugin>
+				<groupId>org.springframework.boot</groupId>
+				<artifactId>spring-boot-maven-plugin</artifactId>
+			<!-- 	<version>2.3.3.RELEASE</version> -->
+				<executions>
+					<execution>
+						<id>pre-integration-test</id>
+						<goals>
+							<goal>start</goal>
+						</goals>
+					</execution>
+					<execution>
+						<id>post-integration-test</id>
+						<goals>
+							<goal>stop</goal>
+						</goals>
+					</execution>
+				</executions>
+			</plugin>
+			<plugin>
+				<groupId>org.springdoc</groupId>
+				<artifactId>springdoc-openapi-maven-plugin</artifactId>
+				<version>0.2</version>
+				<executions>
+					<execution>
+						<phase>integration-test</phase>
+						<goals>
+							<goal>generate</goal>
+						</goals>
+					</execution>
+				</executions>
+			</plugin>
+			<plugin>
+				<groupId>io.fabric8</groupId>
+				<artifactId>docker-maven-plugin</artifactId>
+				<configuration>
+					<verbose>true</verbose>
+					<images>
+						<image>
+							<alias>sample_mock_mdw</alias>
+							<name>sample_mock_mdw:${project.version}</name>
+							
+							<build>
+								<from>${jdkVersion}</from>
+								<tags>
+									<!-- <tag>latest</tag> -->
+									<tag>${project.version}</tag>
+								</tags>
+								<assembly>
+									<descriptorRef>artifact</descriptorRef>
+								</assembly>
+								
+								<cmd>docker cp testFolder/file.txt sample_mock_mdw:/foo.txt</cmd>
+								<cmd>java -jar maven/${project.artifactId}-${project.version}.jar</cmd>
+							</build>
+							<run>
+								<namingStrategy>alias</namingStrategy>
+								<!-- <envPropertyFile>docker-env-local.properties</envPropertyFile> -->
+								<ports>
+									<port>8082:8082</port>
+								</ports>
+								<!-- <wait> <url>http://localhost:8078/osbprj/contract/actuator/health</url> 
+									<time>60000</time> </wait> -->
+							</run>
+							<copy>
+							 <entries>
+     						       <!-- Copy this file first -->
+         						   <entry>
+      						        <!-- The container file to copy -->
+            					    <containerPath>testFolder</containerPath>
+           					   <!--
+                   Absolute path.
+                   ${project.build.directory}/hosts file will be created as a result of copying
+                   and the content of container /etc/hosts file will be placed there.
+              							 -->
+           						   <hostDirectory>/testCarlo</hostDirectory>
+          							  </entry>
+								 </entries>
+							</copy>
+						</image>
+					</images>
+				</configuration>
+				<executions>
+					<execution>
+						<id>docker-default-build</id>
+						<phase>package</phase>
+						<goals>
+							<goal>stop</goal>
+							<goal>build</goal>
+						</goals>
+					</execution>
+					<execution>
+						<id>docker-default-start</id>
+						<phase>pre-integration-test</phase>
+						<goals>
+							<goal>start</goal>
+						</goals>
+					</execution>
+				<!--  	<execution>
+						<id>docker-default-stop</id>
+						<phase>post-integration-test</phase>
+						<goals>
+							<goal>stop</goal>
+						</goals>
+					</execution>-->
+				
+				</executions>
+			</plugin>
+		</plugins>
+	</build>
+
+</project>

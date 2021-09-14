@@ -1,1 +1,3 @@
 # SampleAutomationMock
+
+TEST
