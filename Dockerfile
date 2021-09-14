@@ -6,3 +6,6 @@ RUN addgroup --gid 501 --system jenkins && adduser --system --group jenkins --ui
 
 USER jenkins
 
+RUN mkdir -p /home/jenkins/.m2
+RUN chown -R jenkins:jenkins /home/jenkins/.m2
+
