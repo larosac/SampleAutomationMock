@@ -17,7 +17,7 @@ pipeline
     	MAVEN_REPO_PUBLIC_URL="http://nexus.cicd.prod.sky.aws:8080/repository/maven-public/"
     
 		MAVEN_OPTS="-Dhttps.protocols=TLSv1.2 -Dmaven.repo.local=/home/jenkins/.m2 -Dorg.slf4j.simpleLogger.showDateTime=true -Djava.awt.headless=true"
-    	MAVEN_CLI_OPTS="--batch-mode --errors --fail-at-end --show-version -Dorg.slf4j.simpleLogger.log.org.apache.maven.cli.transfer.Slf4jMavenTransferListener=WARN -DinstallAtEnd=false -DdeployAtEnd=false -s settings.xml"
+    	MAVEN_CLI_OPTS="--batch-mode --errors --fail-at-end --show-version -Dorg.slf4j.simpleLogger.log.org.apache.maven.cli.transfer.Slf4jMavenTransferListener=WARN -DinstallAtEnd=false -DdeployAtEnd=false"
 	}
     stages 
     {
@@ -35,10 +35,8 @@ pipeline
     			script
     			{	
     				docker.image("${DOCKER_BUILD_NAME}").inside(DOCKER_RUN_PARAMS) 
-    				{	sh "echo INIZIO>>log.txt"
-						sh "cd /usr/src/project"
-						sh "pwd"
-        				sh 'mvn  clean'
+    				{	
+        				sh 'mvn $MAVEN_CLI_OPTS $MAVEN_OPTS clean'
         			}
         		}        
 			}    
