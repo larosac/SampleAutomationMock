@@ -5,7 +5,7 @@ pipeline
     environment
     {
     	DOCKER_BUILD_NAME = 'automation-sample-mock-runner'
-        DOCKER_RUN_PARAMS = "-v ${WORKSPACE}:/usr/src/project -u jenkins -w /usr/src/project"
+        DOCKER_RUN_PARAMS = "-v ${WORKSPACE}:/usr/src/project -u jenkins -w /usr/src/project -e MAVEN_CONFIG=/home/jenkins/.m2"
     	MAVEN_REPO_SNAPSHOT_ID="snapshots-repo"
     	MAVEN_REPO_SNAPSHOT_NAME="maven-snapshots"
     	MAVEN_REPO_SNAPSHOT_URL="http://nexus.cicd.prod.sky.aws:8080/repository/maven-snapshots/"
