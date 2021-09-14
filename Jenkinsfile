@@ -27,6 +27,19 @@ pipeline
 				sh("docker build -t ${DOCKER_BUILD_NAME} ." )
 			}
 		}
+		stage ('Clean')
+    	{
+    		steps
+    		{
+    			script
+    			{
+    				docker.image("${DOCKER_BUILD_NAME}").inside(DOCKER_RUN_PARAMS) 
+    				{
+        				sh 'mvn clean'
+        			}
+        		}        
+			}    
+		}
 
     }
 }
