@@ -5,7 +5,7 @@ pipeline
     environment
     {
     	DOCKER_BUILD_NAME = 'automation-sample-mock-runner'
-        DOCKER_RUN_PARAMS = "-v ${WORKSPACE}:/usr/src/project -u jenkins -w /usr/src/project -e MAVEN_CONFIG=/home/jenkins/.m2"
+        DOCKER_RUN_PARAMS = "-v ${WORKSPACE}:/usr/src/project -u jenkins -w /usr/src/project -e MAVEN_CONFIG=/home/jenkins/.m2 "
     	MAVEN_REPO_SNAPSHOT_ID="snapshots-repo"
     	MAVEN_REPO_SNAPSHOT_NAME="maven-snapshots"
     	MAVEN_REPO_SNAPSHOT_URL="http://nexus.cicd.prod.sky.aws:8080/repository/maven-snapshots/"
@@ -16,7 +16,7 @@ pipeline
     	MAVEN_REPO_PUBLIC_NAME="maven-public"
     	MAVEN_REPO_PUBLIC_URL="http://nexus.cicd.prod.sky.aws:8080/repository/maven-public/"
     
-		MAVEN_OPTS="-Dhttps.protocols=TLSv1.2 -Dmaven.repo.local=/home/jenkins/.m2 -Dorg.slf4j.simpleLogger.showDateTime=true -Djava.awt.headless=true"
+		MAVEN_OPTS="-Dhttps.protocols=TLSv1.2 -Dmaven.repo.local=/home/jenkins/.m2 -Dorg.slf4j.simpleLogger.showDateTime=true -Djava.awt.headless=true -Dorg.jenkinsci.plugins.durabletask.BourneShellScript.LAUNCH_DIAGNOSTICS=true"
     	MAVEN_CLI_OPTS="--batch-mode --errors --fail-at-end --show-version -Dorg.slf4j.simpleLogger.log.org.apache.maven.cli.transfer.Slf4jMavenTransferListener=WARN -DinstallAtEnd=false -DdeployAtEnd=false"
 	}
     stages 
