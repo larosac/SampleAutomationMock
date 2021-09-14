@@ -33,10 +33,10 @@ pipeline
     		steps
     		{
     			script
-    			{
+    			{	
     				docker.image("${DOCKER_BUILD_NAME}").inside(DOCKER_RUN_PARAMS) 
-    				{
-        				sh 'mvn $MAVEN_OPTS clean'
+    				{	echo pwd
+        				sh 'mvn clean'
         			}
         		}        
 			}    
