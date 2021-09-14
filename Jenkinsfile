@@ -35,8 +35,9 @@ pipeline
     			script
     			{	
     				docker.image("${DOCKER_BUILD_NAME}").inside(DOCKER_RUN_PARAMS) 
-    				{	sh "cd /usr/src/project"
-						sh "echo pwd"
+    				{	sh "echo INIZIO"
+						sh "cd /usr/src/project"
+						sh "pwd"
         				sh 'mvn  clean'
         			}
         		}        
