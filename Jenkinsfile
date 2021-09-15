@@ -27,6 +27,8 @@ pipeline
     			{	
     				docker.image("${DOCKER_BUILD_NAME}").inside(DOCKER_RUN_PARAMS) 
     				{	
+    				echo "Building configuration: ${params.BranchName}"
+					echo "Building configuration: " + params.BranchName
         				sh 'mvn $MAVEN_CLI_OPTS $MAVEN_OPTS clean'
         			}
         		}        
